@@ -18,8 +18,14 @@ namespace TestRESTAPI.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
+        public IActionResult AddForcast(WeatherForecast forecast)
+        {
+            return Ok(); //200
+        }
+
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecast> Get(int code, string name)
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
