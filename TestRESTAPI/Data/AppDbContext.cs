@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestRESTAPI.Data.Models;
 
 namespace TestRESTAPI.Data
 {
@@ -9,6 +10,6 @@ namespace TestRESTAPI.Data
         
         }
 
-
+        public DbSet<Category> Categories { get; set; }
     }
 }
