@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestRESTAPI.Data;
 using TestRESTAPI.Data.Models;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace TestRESTAPI.Controllers
 {
@@ -44,6 +47,20 @@ namespace TestRESTAPI.Controllers
             }
             c.Name = category.Name;
             _db.SaveChanges();
+            return Ok(c);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> 
+            UpdateCategoryPatch([FromBody] JsonPatchDocument<Category> category, [FromRoute] int id )
+        {
+            var c = await _db.Categories.SingleOrDefaultAsync(x => x.Id == id);
+            if (c == null)
+            {
+                return NotFound($"Category Id {id} not exists ");
+            }
+            category.ApplyTo(c);
+            await _db.SaveChangesAsync();
             return Ok(c);
         }
 

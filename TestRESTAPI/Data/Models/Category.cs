@@ -9,5 +9,7 @@ namespace TestRESTAPI.Data.Models
 
         [MaxLength(50)]
         public string Name { get; set; }
+
+        public string? notes { get; set; }
     }
 }
