@@ -28,6 +28,17 @@ namespace TestRESTAPI.Controllers
             return Ok(cats);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCategories(int id)
+        {
+            var cats = await _db.Categories.SingleOrDefaultAsync(x => x.Id == id);
+            if (cats == null)
+            {
+                return NotFound($"Category Id {id} not exists ");
+            }
+            return Ok(cats);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddCategory(string category)
         {
