@@ -47,7 +47,7 @@ namespace TestRESTAPI.Controllers
             return Ok(c);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
             var c = await _db.Categories.SingleOrDefaultAsync(x => x.Id == id);
