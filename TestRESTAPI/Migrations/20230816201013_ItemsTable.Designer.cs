@@ -11,7 +11,7 @@ using TestRESTAPI.Data;
 namespace TestRESTAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230816152011_ItemsTable")]
+    [Migration("20230816201013_ItemsTable")]
     partial class ItemsTable
     {
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace TestRESTAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("TestRESTAPI.Data.Models.Item", b =>

@@ -71,7 +71,7 @@ namespace TestRESTAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("TestRESTAPI.Data.Models.Item", b =>
