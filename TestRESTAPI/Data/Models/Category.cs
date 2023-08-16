@@ -11,5 +11,7 @@ namespace TestRESTAPI.Data.Models
         public string Name { get; set; }
 
         public string? notes { get; set; }
+
+        public List<Item> Items { get; set;}
     }
 }
