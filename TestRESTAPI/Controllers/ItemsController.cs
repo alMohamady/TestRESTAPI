@@ -30,16 +30,27 @@ namespace TestRESTAPI.Controllers
         public async Task<IActionResult> AllItems(int id)
         {
             var item = await _db.Items.SingleOrDefaultAsync(x => x.Id == id);
-            if(item == null) 
+            if (item == null)
             {
-                return NotFound($"Item Code {id} not exists!"); 
+                return NotFound($"Item Code {id} not exists!");
+            }
+            return Ok(item);
+        }
+
+        [HttpGet("ItemsWithCategory/{idCategory}")]
+        public async Task<IActionResult> AllItemsWithCategory(int idCategory)
+        {
+            var item = await _db.Items.Where(x => x.CategoryId == idCategory).ToListAsync();
+            if (item == null)
+            {
+                return NotFound($"Category Id {idCategory} has no items!");
             }
             return Ok(item);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddItem([FromForm]mdlItem mdl)
-        { 
+        public async Task<IActionResult> AddItem([FromForm] mdlItem mdl)
+        {
             using var stream = new MemoryStream();
             await mdl.Image.CopyToAsync(stream);
             var item = new Item
@@ -55,6 +66,17 @@ namespace TestRESTAPI.Controllers
             return Ok(item);
         }
 
-
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteItem(int id)
+        {
+            var item = await _db.Items.SingleOrDefaultAsync(x => x.Id == id);
+            if (item == null)
+            {
+                return NotFound($"  item id {id} not exists !");
+            }
+            _db.Items.Remove(item);
+            await _db.SaveChangesAsync();
+            return Ok(item);
+        }
     }
 }
