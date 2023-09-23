@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace TestRESTAPI.Data.Models
@@ -21,10 +22,14 @@ namespace TestRESTAPI.Data.Models
         [ForeignKey(nameof(category))]
         public int CategoryId { get; set; }
 
-        public Category category { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Category category { get; set; }
 
         public bool isActive { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<OrderItem> ordersItems { get; set;}
     }
 }

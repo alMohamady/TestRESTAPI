@@ -22,9 +22,7 @@ namespace TestRESTAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = _db.Orders.Where(x => x.id == 1)
-                                  .FirstOrDefault().ordersItems
-                                  .FirstOrDefault().items;
+            var orders = _db.Orders.ToArray();
             return Ok(orders); 
         }
 
