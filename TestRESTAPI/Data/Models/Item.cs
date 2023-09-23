@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace TestRESTAPI.Data.Models
 {
@@ -21,5 +22,9 @@ namespace TestRESTAPI.Data.Models
         public int CategoryId { get; set; }
 
         public Category category { get; set; }
+
+        public bool isActive { get; set; }
+
+        public virtual ICollection<OrderItem> ordersItems { get; set;}
     }
 }
