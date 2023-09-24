@@ -23,16 +23,16 @@ namespace TestRESTAPI.Controllers
         public async Task<IActionResult> GetOrderById(int orderId)
         {
             var order = await _db.Orders.Where(x => x.id == orderId).FirstOrDefaultAsync();
-            if (order != null) 
+            if (order != null)
             {
                 dtoOrders dto = new()
                 {
                     orderId = order.id,
                     OrderDate = order.CreatedDate,
                 };
-                if (order.ordersItems != null && order.ordersItems.Any()) 
+                if (order.ordersItems != null && order.ordersItems.Any())
                 {
-                    foreach(var item in order.ordersItems) 
+                    foreach (var item in order.ordersItems)
                     {
                         dtoOrdersItems dtoItem = new()
                         {
@@ -60,13 +60,34 @@ namespace TestRESTAPI.Controllers
         public async Task<IActionResult> GetAllOrders()
         {
             var orders = _db.Orders.ToArray();
-            return Ok(orders); 
+            return Ok(orders);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(Order order)
+        public async Task<IActionResult> AddOrder([FromBody]dtoOrders order)
         {
-            return Ok(order);
+            if (ModelState.IsValid)
+            {
+                Order mdl = new()
+                {
+                    CreatedDate = order.OrderDate,
+                    ordersItems = new List<OrderItem>()
+                };
+                foreach (var item in order.items)
+                {
+                    OrderItem orderItem = new()
+                    {
+                        ItemId = item.itemId,
+                        Price = item.price,
+                    };
+                    mdl.ordersItems.Add(orderItem);
+                }
+                await _db.Orders.AddAsync(mdl);
+                await _db.SaveChangesAsync();
+                order.orderId = mdl.id;
+                return Ok(order);
+            }
+            return BadRequest();
         }
     }
 }
