@@ -66,9 +66,9 @@ namespace TestRESTAPI.Controllers
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
                         claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
                         var roles = await _userManager.GetRolesAsync(user);
-                        foreach (var role in roles) 
+                        foreach (var role in roles)
                         {
-                           claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+                            claims.Add(new Claim(ClaimTypes.Role, role.ToString()));
                         }
                         //signingCredentials
                         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]));
@@ -77,10 +77,15 @@ namespace TestRESTAPI.Controllers
                             claims: claims,
                             issuer: configuration["JWT:Issuer"],
                             audience: configuration["JWT:Audience"],
-                            expires: DateTime.Now.AddHours(1), 
+                            expires: DateTime.Now.AddHours(1),
                             signingCredentials: sc
-                            ) ;
-
+                            );
+                        var _token = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo,
+                        };
+                        return Ok(_token);
                     }
                     else
                     {
